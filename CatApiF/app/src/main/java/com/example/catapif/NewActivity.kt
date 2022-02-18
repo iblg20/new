@@ -7,7 +7,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.catapif.api.RetrofitApi
+import com.example.catapif.model.Vote
+import com.example.catapif.model.VoteResponse
 import kotlinx.android.synthetic.main.activity_new.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 class NewActivity : AppCompatActivity() {
 
@@ -43,6 +50,17 @@ class NewActivity : AppCompatActivity() {
                 clickPos < 2 -> clickPos++
                 else -> ratePositive.isEnabled = false
             }
+            RetrofitApi.service.sendData(Vote(catId, 1)).enqueue(object : Callback<VoteResponse>{
+                override fun onResponse(
+                    call: Call<VoteResponse>,
+                    response: Response<VoteResponse>
+                ) {
+                    Toast.makeText(this@NewActivity, "YES" , Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(call: Call<VoteResponse>, t: Throwable) {
+                    Toast.makeText(this@NewActivity, "NO" , Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         rateNegative.setOnClickListener {
@@ -51,6 +69,17 @@ class NewActivity : AppCompatActivity() {
                 clickNeg < 2 -> clickNeg++
                 else -> rateNegative.isEnabled = false
             }
+            RetrofitApi.service.sendData(Vote(catId, 1)).enqueue(object : Callback<VoteResponse>{
+                override fun onResponse(
+                    call: Call<VoteResponse>,
+                    response: Response<VoteResponse>
+                ) {
+                    Toast.makeText(this@NewActivity, "YES" , Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(call: Call<VoteResponse>, t: Throwable) {
+                    Toast.makeText(this@NewActivity, "NO" , Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         // Back to the 1st activity
@@ -58,6 +87,8 @@ class NewActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
     }
+
 }
+
+

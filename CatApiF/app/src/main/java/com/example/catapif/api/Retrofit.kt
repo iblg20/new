@@ -1,23 +1,24 @@
 package com.example.catapif.api
 
-import com.example.catapif.model.CatDataItem
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Retrofit {
-    private val service: ApiInterface
-    private val BASE_URL = "https://api.thecatapi.com/v1/images/"
+val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-    init{
-        val api = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
-            .build()
+val httpClient = OkHttpClient.Builder().addInterceptor(logging)
 
-        service = api.create(ApiInterface::class.java)
-    }
+private val BASE_URL = "https://api.thecatapi.com/v1/"
 
-    suspend fun getMyData(): List<CatDataItem> {
-        return service.getData()
+val retrofit = Retrofit.Builder()
+    .addConverterFactory(GsonConverterFactory.create())
+    .baseUrl(BASE_URL)
+    .client(httpClient.build())
+    .build()
+
+object RetrofitApi {
+    val service: ApiInterface by lazy {
+        retrofit.create(ApiInterface::class.java)
     }
 }

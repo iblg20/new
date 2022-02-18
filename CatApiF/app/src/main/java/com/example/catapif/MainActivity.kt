@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.catapif.adapter.CatAdapter
-import com.example.catapif.api.Retrofit
+import com.example.catapif.api.RetrofitApi
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_new.*
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // Run Coroutine
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch(errorHandler) {
-            var resultList = Retrofit().getMyData()
+            var resultList = RetrofitApi.service.getData()
             var catAdapter = CatAdapter(resultList, this@MainActivity)
 
             recyclerview_cats.layoutManager = GridLayoutManager(this@MainActivity, 2)
